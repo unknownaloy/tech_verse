@@ -24,7 +24,7 @@ class Screen01 extends StatelessWidget {
                 ),
                 Text(
                   "Protect Your Account",
-                  style: GoogleFonts.roboto(
+                  style: GoogleFonts.ubuntu(
                     fontSize: 24.0,
                     fontWeight: FontWeight.w700,
                     color: Colors.white,
@@ -35,7 +35,7 @@ class Screen01 extends StatelessWidget {
                 ),
                 Text(
                   "Get verification codes for all your accounts using multi-factor verification",
-                  style: GoogleFonts.roboto(
+                  style: GoogleFonts.ubuntu(
                     fontSize: 16.0,
                     color: Colors.white,
                   ),
@@ -86,7 +86,7 @@ class Screen01 extends StatelessWidget {
                       children: [
                         Text(
                           "Skip",
-                          style: GoogleFonts.roboto(
+                          style: GoogleFonts.ubuntu(
                             fontWeight: FontWeight.w600,
                             color: Colors.white,
                           ),

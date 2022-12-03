@@ -35,7 +35,7 @@ class Screen03 extends StatelessWidget {
                 ),
                 Text(
                   "Unique Code",
-                  style: GoogleFonts.roboto(
+                  style: GoogleFonts.ubuntu(
                     fontSize: 24.0,
                     fontWeight: FontWeight.w700,
                     color: Colors.white,
@@ -46,7 +46,7 @@ class Screen03 extends StatelessWidget {
                 ),
                 Text(
                   "Enter your password and verify with a code from the app",
-                  style: GoogleFonts.roboto(
+                  style: GoogleFonts.ubuntu(
                     fontSize: 16.0,
                     color: Colors.white,
                   ),
@@ -76,14 +76,14 @@ class Screen03 extends StatelessWidget {
                       ),
                       CircleAvatar(
                         radius: 8.0,
-                        backgroundColor: Colors.white,
+                        backgroundColor: Color(0xffCECECE),
                       ),
                       SizedBox(
                         width: 32.0,
                       ),
                       CircleAvatar(
                         radius: 8.0,
-                        backgroundColor: Color(0xffCECECE),
+                        backgroundColor: Colors.white,
                       ),
                     ],
                   ),
@@ -97,7 +97,7 @@ class Screen03 extends StatelessWidget {
                       children: [
                         Text(
                           "FINISH",
-                          style: GoogleFonts.roboto(
+                          style: GoogleFonts.ubuntu(
                             fontWeight: FontWeight.w600,
                             color: Colors.white,
                           ),

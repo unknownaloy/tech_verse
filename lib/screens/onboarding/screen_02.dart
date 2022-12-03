@@ -35,7 +35,7 @@ class Screen02 extends StatelessWidget {
                 ),
                 Text(
                   "Scan Your Account",
-                  style: GoogleFonts.roboto(
+                  style: GoogleFonts.ubuntu(
                     fontSize: 24.0,
                     fontWeight: FontWeight.w700,
                     color: Colors.white,
@@ -46,7 +46,7 @@ class Screen02 extends StatelessWidget {
                 ),
                 Text(
                   "To setup your account, you can scan the QR code in your verification settings for any third party service",
-                  style: GoogleFonts.roboto(
+                  style: GoogleFonts.ubuntu(
                     fontSize: 16.0,
                     color: Colors.white,
                   ),
@@ -97,7 +97,7 @@ class Screen02 extends StatelessWidget {
                       children: [
                         Text(
                           "Skip",
-                          style: GoogleFonts.roboto(
+                          style: GoogleFonts.ubuntu(
                             fontWeight: FontWeight.w600,
                             color: Colors.white,
                           ),
