@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tech_verse/screens/onboarding/onboarding_screen_01.dart';
+import 'package:tech_verse/screens/onboarding/onboarding_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,10 +13,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const OnboardingScreen01(),
+      home: const OnboardingScreen(),
     );
   }
 }
