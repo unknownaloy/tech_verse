@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "102677960753",
+    "project_id": "techverse-79f18",
+    "storage_bucket": "techverse-79f18.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:102677960753:android:ef944651ddec9d68079d10",
+        "android_client_info": {
+          "package_name": "com.techverse.tech_verse"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "102677960753-nciv2v6c1bkiv9b3vkh4epbqp0brj6fv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBE64j01BLm_mYkDvrfvsMJSuPJYQsLjtg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "102677960753-nciv2v6c1bkiv9b3vkh4epbqp0brj6fv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
