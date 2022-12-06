@@ -241,16 +241,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ],
               ),
-
-
-
-
-
-
-
-
-
-
               Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
