@@ -17,9 +17,14 @@ class SignUpStateNotifier extends StateNotifier<AuthState> {
   TechVerseUser? _techVerseUser;
   TechVerseUser? get techVerseUser => _techVerseUser;
 
+  String? _errorMessage;
+  String? get errorMessage => _errorMessage;
+
   void signUp({
     required String email,
     required String password,
+    required String fullName,
+    required String username,
   }) async {
     state = const AuthState.loading();
     try {
@@ -30,9 +35,12 @@ class SignUpStateNotifier extends StateNotifier<AuthState> {
 
       _techVerseUser = user;
     } on Failure catch (e) {
-      state = AuthState.error(e.message);
+      state = const AuthState.error();
+      _errorMessage = e.message;
     } finally {
-      state = const AuthState.success();
+      Future.delayed(const Duration(milliseconds: 100), () {
+        state = const AuthState.idle();
+      });
     }
   }
 }

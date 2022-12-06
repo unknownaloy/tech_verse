@@ -1,15 +1,19 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tech_verse/enums/auth_state.dart';
+import 'package:tech_verse/utilities/service_locator.dart';
+import 'package:tech_verse/view_models/sign_up_state_notifier.dart';
 
-class SignUpScreen extends StatefulWidget {
+class SignUpScreen extends ConsumerStatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
 
   @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
+  ConsumerState<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   late final TextEditingController _emailTextController;
@@ -42,6 +46,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ref.listen<AuthState>(signUpStateNotifier, (previous, next) {
+      if (next == const AuthState.success()) {
+        // navigate to home screen
+      }
+
+      if (next == const AuthState.error()) {
+        final errorMessage =
+            ref.read(signUpStateNotifier.notifier).errorMessage;
+
+        if (errorMessage != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(errorMessage),
+            ),
+          );
+        }
+      }
+    });
     return SafeArea(
       child: Scaffold(
         body: Container(
@@ -112,7 +134,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       filled: true,
                                       fillColor: Colors.white,
                                       border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(24.0),
+                                        borderRadius:
+                                            BorderRadius.circular(24.0),
                                       ),
                                     ),
                                     validator: (String? value) {
@@ -135,14 +158,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   ),
                                   TextFormField(
                                     controller: _fullNameTextController,
-                                    textCapitalization: TextCapitalization.words,
+                                    textCapitalization:
+                                        TextCapitalization.words,
                                     decoration: InputDecoration(
                                       isDense: true,
                                       hintText: "Full Name",
                                       filled: true,
                                       fillColor: Colors.white,
                                       border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(24.0),
+                                        borderRadius:
+                                            BorderRadius.circular(24.0),
                                       ),
                                     ),
                                     validator: (String? value) {
@@ -163,7 +188,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       filled: true,
                                       fillColor: Colors.white,
                                       border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(24.0),
+                                        borderRadius:
+                                            BorderRadius.circular(24.0),
                                       ),
                                     ),
                                     validator: (String? value) {
@@ -185,7 +211,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       filled: true,
                                       fillColor: Colors.white,
                                       border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(24.0),
+                                        borderRadius:
+                                            BorderRadius.circular(24.0),
                                       ),
                                     ),
                                     validator: (String? value) {
@@ -200,13 +227,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   ),
                                   TextFormField(
                                     controller: _confirmPasswordTextController,
+                                    obscureText: true,
                                     decoration: InputDecoration(
                                       isDense: true,
                                       hintText: "Confirm Password",
                                       filled: true,
                                       fillColor: Colors.white,
                                       border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(24.0),
+                                        borderRadius:
+                                            BorderRadius.circular(24.0),
                                       ),
                                     ),
                                     validator: (String? value) {
@@ -227,11 +256,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   TextButton(
                                     onPressed: () {
                                       if (_formKey.currentState!.validate()) {
-                                        debugPrint("SignUpScreen CLICKED!!!");
+                                        final signUpViewModel = ref
+                                            .read(signUpStateNotifier.notifier);
+
+                                        signUpViewModel.signUp(
+                                          email:
+                                              _emailTextController.text.trim(),
+                                          password: _passwordTextController.text
+                                              .trim(),
+                                          fullName: _fullNameTextController.text
+                                              .trim(),
+                                          username: _usernameTextController.text
+                                              .trim(),
+                                        );
                                       }
                                     },
                                     style: ButtonStyle(
-                                      backgroundColor: MaterialStateProperty.all(
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
                                         const Color(0xff2C64C6),
                                       ),
                                       minimumSize: MaterialStateProperty.all(
@@ -240,18 +282,42 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       // side: MaterialStateProperty.all(BorderSide())
                                       shape: MaterialStateProperty.all(
                                         RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(24.0),
+                                          borderRadius:
+                                              BorderRadius.circular(24.0),
                                         ),
                                       ),
                                     ),
-                                    child: Text(
-                                      "Sign Up",
-                                      style: GoogleFonts.ubuntu(
-                                        fontWeight: FontWeight.w700,
-                                        color: Colors.white,
-                                        fontSize: 18.0,
-                                      ),
-                                    ),
+                                    child: ref.watch(signUpStateNotifier).when(
+                                          idle: () => Text(
+                                            "Sign Up",
+                                            style: GoogleFonts.ubuntu(
+                                              fontWeight: FontWeight.w700,
+                                              color: Colors.white,
+                                              fontSize: 18.0,
+                                            ),
+                                          ),
+                                          loading: () =>
+                                              const CircularProgressIndicator(
+                                            strokeWidth: 2.0,
+                                            color: Colors.white,
+                                          ),
+                                          success: () => Text(
+                                            "Sign Up",
+                                            style: GoogleFonts.ubuntu(
+                                              fontWeight: FontWeight.w700,
+                                              color: Colors.white,
+                                              fontSize: 18.0,
+                                            ),
+                                          ),
+                                          error: (error) => Text(
+                                            "Sign Up",
+                                            style: GoogleFonts.ubuntu(
+                                              fontWeight: FontWeight.w700,
+                                              color: Colors.white,
+                                              fontSize: 18.0,
+                                            ),
+                                          ),
+                                        ),
                                   ),
                                   const SizedBox(
                                     height: 24.0,
@@ -271,8 +337,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                                 // TODO: Handle sign up click
                                               },
                                             style: TextStyle(
-                                              decoration: TextDecoration.underline,
-                                              fontFamily: GoogleFonts.ubuntu().fontFamily,
+                                              decoration:
+                                                  TextDecoration.underline,
+                                              fontFamily: GoogleFonts.ubuntu()
+                                                  .fontFamily,
                                               color: Colors.white,
                                               fontWeight: FontWeight.w700,
                                             )),

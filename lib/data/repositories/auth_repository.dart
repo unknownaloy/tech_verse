@@ -6,7 +6,6 @@ import 'package:tech_verse/domain/repositories/auth_repository_interface.dart';
 import 'package:tech_verse/utilities/failure.dart';
 import 'package:tech_verse/utilities/strings.dart';
 
-
 class AuthRepository implements AuthRepositoryInterface {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -17,7 +16,7 @@ class AuthRepository implements AuthRepositoryInterface {
   }) async {
     try {
       final UserCredential userCredential =
-          await _auth.signInWithEmailAndPassword(
+          await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -33,7 +32,7 @@ class AuthRepository implements AuthRepositoryInterface {
       throw Failure(e.message ?? kFirebaseExceptionMessage);
     } on SocketException {
       throw Failure(kSocketExceptionMessage);
-    } catch (_) {
+    } catch (e) {
       throw Failure(kCatchErrorMessage);
     }
   }
