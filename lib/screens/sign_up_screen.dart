@@ -12,6 +12,34 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  late final TextEditingController _emailTextController;
+  late final TextEditingController _fullNameTextController;
+  late final TextEditingController _usernameTextController;
+  late final TextEditingController _passwordTextController;
+  late final TextEditingController _confirmPasswordTextController;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _emailTextController = TextEditingController();
+    _fullNameTextController = TextEditingController();
+    _usernameTextController = TextEditingController();
+    _passwordTextController = TextEditingController();
+    _confirmPasswordTextController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _emailTextController.dispose();
+    _fullNameTextController.dispose();
+    _usernameTextController.dispose();
+    _passwordTextController.dispose();
+    _confirmPasswordTextController.dispose();
+
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -33,239 +61,259 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ],
             ),
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    "TECHVERSE",
-                    style: GoogleFonts.ubuntu(
-                      fontSize: 48.0,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white,
-                    ),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return SingleChildScrollView(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minWidth: constraints.maxWidth,
+                    minHeight: constraints.maxHeight,
                   ),
-                  const SizedBox(
-                    height: 32.0,
-                  ),
-                  Text(
-                    "Your one-stop to authentication",
-                    style: GoogleFonts.ubuntu(
-                      fontSize: 16.0,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 32.0,
-                  ),
-                  Form(
-                    key: _formKey,
+                  child: IntrinsicHeight(
                     child: Column(
-                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisSize: MainAxisSize.max,
                       children: [
-                        TextFormField(
-                          // decoration: const InputDecoration(
-                          //   hintText: 'Enter your email',
-                          // ),
-                          decoration: InputDecoration(
-                            isDense: true,
-                            hintText: "Email address",
-                            filled: true,
-                            fillColor: Colors.white,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(24.0),
-                            ),
-                          ),
-                          validator: (String? value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter some text';
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(
-                          height: 16.0,
-                        ),
-                        TextFormField(
-                          // decoration: const InputDecoration(
-                          //   hintText: 'Enter your email',
-                          // ),
-                          decoration: InputDecoration(
-                            isDense: true,
-                            hintText: "Full Name",
-                            filled: true,
-                            fillColor: Colors.white,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(24.0),
-                            ),
-                          ),
-                          validator: (String? value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter some text';
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(
-                          height: 16.0,
-                        ),
-                        TextFormField(
-                          // decoration: const InputDecoration(
-                          //   hintText: 'Enter your email',
-                          // ),
-                          decoration: InputDecoration(
-                            isDense: true,
-                            hintText: "Username",
-                            filled: true,
-                            fillColor: Colors.white,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(24.0),
-                            ),
-                          ),
-                          validator: (String? value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter some text';
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(
-                          height: 16.0,
-                        ),
-                        TextFormField(
-                          // decoration: const InputDecoration(
-                          //   hintText: 'Enter your email',
-                          // ),
-                          decoration: InputDecoration(
-                            isDense: true,
-                            hintText: "Password",
-                            filled: true,
-                            fillColor: Colors.white,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(24.0),
-                            ),
-                          ),
-                          validator: (String? value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter some text';
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(
-                          height: 16.0,
-                        ),
-                        TextFormField(
-                          // decoration: const InputDecoration(
-                          //   hintText: 'Enter your email',
-                          // ),
-                          decoration: InputDecoration(
-                            isDense: true,
-                            hintText: "Confirm Password",
-                            filled: true,
-                            fillColor: Colors.white,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(24.0),
-                            ),
-                          ),
-                          validator: (String? value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter some text';
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(
-                          height: 24.0,
-                        ),
-                        TextButton(
-                          onPressed: () {},
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
-                              const Color(0xff2C64C6),
-                            ),
-                            minimumSize: MaterialStateProperty.all(
-                              const Size.fromHeight(48.0),
-                            ),
-                            // side: MaterialStateProperty.all(BorderSide())
-                            shape: MaterialStateProperty.all(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(24.0),
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              "TECHVERSE",
+                              style: GoogleFonts.ubuntu(
+                                fontSize: 48.0,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white,
                               ),
                             ),
-                          ),
-                          child: Text(
-                            "Sign Up",
-                            style: GoogleFonts.ubuntu(
-                              fontWeight: FontWeight.w700,
-                              color: Colors.white,
-                              fontSize: 18.0,
+                            const SizedBox(
+                              height: 32.0,
                             ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 24.0,
-                        ),
-                        RichText(
-                          text: TextSpan(
-                            text: "Have an account? ",
-                            style: GoogleFonts.ubuntu(
-                              fontSize: 16.0,
-                              color: Colors.white,
+                            Text(
+                              "Your one-stop to authentication",
+                              style: GoogleFonts.ubuntu(
+                                fontSize: 16.0,
+                                color: Colors.white,
+                              ),
                             ),
-                            children: <TextSpan>[
-                              TextSpan(
-                                  text: 'Login In',
-                                  recognizer: TapGestureRecognizer()
-                                    ..onTap = () {
-                                      // TODO: Handle sign up click
+                            const SizedBox(
+                              height: 32.0,
+                            ),
+                            Form(
+                              key: _formKey,
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  TextFormField(
+                                    controller: _emailTextController,
+                                    keyboardType: TextInputType.emailAddress,
+                                    decoration: InputDecoration(
+                                      isDense: true,
+                                      hintText: "Email address",
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(24.0),
+                                      ),
+                                    ),
+                                    validator: (String? value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Email is required';
+                                      }
+
+                                      final RegExp emailRegExp = RegExp(
+                                        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$',
+                                      );
+
+                                      if (!emailRegExp.hasMatch(value.trim())) {
+                                        return "Please enter a valid email";
+                                      }
+                                      return null;
                                     },
-                                  // style: GoogleFonts.ubuntu(
-                                  //   fontSize: 16.0,
-                                  //   color: Colors.white,
-                                  //   fontWeight: FontWeight.w700,
-                                  // ),
-                                  style: TextStyle(
-                                    decoration: TextDecoration.underline,
-                                    fontFamily: GoogleFonts.ubuntu().fontFamily,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w700,
-                                  )),
-                            ],
-                          ),
+                                  ),
+                                  const SizedBox(
+                                    height: 16.0,
+                                  ),
+                                  TextFormField(
+                                    controller: _fullNameTextController,
+                                    textCapitalization: TextCapitalization.words,
+                                    decoration: InputDecoration(
+                                      isDense: true,
+                                      hintText: "Full Name",
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(24.0),
+                                      ),
+                                    ),
+                                    validator: (String? value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Full name is required';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                  const SizedBox(
+                                    height: 16.0,
+                                  ),
+                                  TextFormField(
+                                    controller: _usernameTextController,
+                                    decoration: InputDecoration(
+                                      isDense: true,
+                                      hintText: "Username",
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(24.0),
+                                      ),
+                                    ),
+                                    validator: (String? value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Username is required';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                  const SizedBox(
+                                    height: 16.0,
+                                  ),
+                                  TextFormField(
+                                    controller: _passwordTextController,
+                                    obscureText: true,
+                                    decoration: InputDecoration(
+                                      isDense: true,
+                                      hintText: "Password",
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(24.0),
+                                      ),
+                                    ),
+                                    validator: (String? value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Password is required';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                  const SizedBox(
+                                    height: 16.0,
+                                  ),
+                                  TextFormField(
+                                    controller: _confirmPasswordTextController,
+                                    decoration: InputDecoration(
+                                      isDense: true,
+                                      hintText: "Confirm Password",
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(24.0),
+                                      ),
+                                    ),
+                                    validator: (String? value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Please enter password';
+                                      }
+
+                                      if (_passwordTextController.text.trim() !=
+                                          value.trim()) {
+                                        return "Password does not match";
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                  const SizedBox(
+                                    height: 24.0,
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      if (_formKey.currentState!.validate()) {
+                                        debugPrint("SignUpScreen CLICKED!!!");
+                                      }
+                                    },
+                                    style: ButtonStyle(
+                                      backgroundColor: MaterialStateProperty.all(
+                                        const Color(0xff2C64C6),
+                                      ),
+                                      minimumSize: MaterialStateProperty.all(
+                                        const Size.fromHeight(48.0),
+                                      ),
+                                      // side: MaterialStateProperty.all(BorderSide())
+                                      shape: MaterialStateProperty.all(
+                                        RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(24.0),
+                                        ),
+                                      ),
+                                    ),
+                                    child: Text(
+                                      "Sign Up",
+                                      style: GoogleFonts.ubuntu(
+                                        fontWeight: FontWeight.w700,
+                                        color: Colors.white,
+                                        fontSize: 18.0,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 24.0,
+                                  ),
+                                  RichText(
+                                    text: TextSpan(
+                                      text: "Have an account? ",
+                                      style: GoogleFonts.ubuntu(
+                                        fontSize: 16.0,
+                                        color: Colors.white,
+                                      ),
+                                      children: <TextSpan>[
+                                        TextSpan(
+                                            text: 'Login In',
+                                            recognizer: TapGestureRecognizer()
+                                              ..onTap = () {
+                                                // TODO: Handle sign up click
+                                              },
+                                            style: TextStyle(
+                                              decoration: TextDecoration.underline,
+                                              fontFamily: GoogleFonts.ubuntu().fontFamily,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w700,
+                                            )),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              "We need permission for the service you use",
+                              style: GoogleFonts.ubuntu(
+                                color: Colors.white,
+                                fontSize: 12.0,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 8.0,
+                            ),
+                            Text(
+                              "Learn More",
+                              style: TextStyle(
+                                fontSize: 16.0,
+                                color: Colors.white,
+                                fontFamily: GoogleFonts.ubuntu().fontFamily,
+                                decoration: TextDecoration.underline,
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
                   ),
-                ],
-              ),
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    "We need permission for the service you use",
-                    style: GoogleFonts.ubuntu(
-                      color: Colors.white,
-                      fontSize: 12.0,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 8.0,
-                  ),
-                  Text(
-                    "Learn More",
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      color: Colors.white,
-                      fontFamily: GoogleFonts.ubuntu().fontFamily,
-                      decoration: TextDecoration.underline,
-                    ),
-                  ),
-                ],
-              ),
-            ],
+                ),
+              );
+            },
           ),
         ),
       ),
