@@ -13,10 +13,3 @@ final authViewModel = StateNotifierProvider<AuthViewModel, AppState>(
     return AuthViewModel(authRepository: authService);
   },
 );
-
-final signUpStateNotifier =
-    StateNotifierProvider<SignUpStateNotifier, RequestState>((ref) {
-  final authService = ref.watch(authRepository);
-
-  return SignUpStateNotifier(authRepositoryInterface: authService);
-});

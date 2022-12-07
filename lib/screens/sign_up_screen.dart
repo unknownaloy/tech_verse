@@ -46,10 +46,10 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    ref.listen<RequestState>(signUpStateNotifier, (previous, next) {
+    ref.listen<RequestState>(signUpViewModel, (previous, next) {
       if (next == const RequestState.error()) {
         final errorMessage =
-            ref.read(signUpStateNotifier.notifier).errorMessage;
+            ref.read(signUpViewModel.notifier).errorMessage;
 
         if (errorMessage != null) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -252,10 +252,10 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                                   TextButton(
                                     onPressed: () {
                                       if (_formKey.currentState!.validate()) {
-                                        final signUpViewModel = ref
-                                            .read(signUpStateNotifier.notifier);
+                                        final model = ref
+                                            .read(signUpViewModel.notifier);
 
-                                        signUpViewModel.signUp(
+                                        model.signUp(
                                           email:
                                               _emailTextController.text.trim(),
                                           password: _passwordTextController.text
@@ -283,7 +283,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                                         ),
                                       ),
                                     ),
-                                    child: ref.watch(signUpStateNotifier).when(
+                                    child: ref.watch(signUpViewModel).when(
                                           idle: () => Text(
                                             "Sign Up",
                                             style: GoogleFonts.ubuntu(

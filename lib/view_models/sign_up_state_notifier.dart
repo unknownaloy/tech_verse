@@ -1,12 +1,21 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tech_verse/data/repositories/auth_repository.dart';
 import 'package:tech_verse/domain/repositories/auth_repository_interface.dart';
 import 'package:tech_verse/enums/request_state.dart';
 import 'package:tech_verse/utilities/failure.dart';
 
-class SignUpStateNotifier extends StateNotifier<RequestState> {
+
+final signUpViewModel =
+StateNotifierProvider<SignUpViewModel, RequestState>((ref) {
+  final authService = ref.watch(authRepository);
+
+  return SignUpViewModel(authRepositoryInterface: authService);
+});
+
+class SignUpViewModel extends StateNotifier<RequestState> {
   final AuthRepositoryInterface _authRepositoryInterface;
 
-  SignUpStateNotifier({
+  SignUpViewModel({
     required AuthRepositoryInterface authRepositoryInterface,
   })  : _authRepositoryInterface = authRepositoryInterface,
         super(
