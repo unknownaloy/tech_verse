@@ -2,7 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tech_verse/enums/auth_state.dart';
+import 'package:tech_verse/enums/request_state.dart';
 import 'package:tech_verse/utilities/service_locator.dart';
 import 'package:tech_verse/view_models/sign_up_state_notifier.dart';
 
@@ -46,12 +46,8 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    ref.listen<AuthState>(signUpStateNotifier, (previous, next) {
-      if (next == const AuthState.success()) {
-        // navigate to home screen
-      }
-
-      if (next == const AuthState.error()) {
+    ref.listen<RequestState>(signUpStateNotifier, (previous, next) {
+      if (next == const RequestState.error()) {
         final errorMessage =
             ref.read(signUpStateNotifier.notifier).errorMessage;
 

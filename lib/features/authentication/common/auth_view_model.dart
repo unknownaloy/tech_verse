@@ -12,7 +12,7 @@ class AuthViewModel extends StateNotifier<AppState> {
   AuthViewModel({required AuthRepositoryInterface authRepository})
       : _authRepository = authRepository,
         super(AppState.idle) {
-    _streamSubscription = _authRepository.user().listen(
+    _streamSubscription = _authRepository.getUser().listen(
           (user) => _onUserChanged(user),
         );
   }
@@ -24,6 +24,7 @@ class AuthViewModel extends StateNotifier<AppState> {
       state = AppState.unAuthenticated;
       return;
     }
+    // TODO: Make call to get extra user's data here
     state = AppState.authenticated;
   }
 

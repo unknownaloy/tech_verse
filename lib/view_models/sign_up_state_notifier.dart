@@ -1,21 +1,17 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tech_verse/data/models/tech_verse_user.dart';
 import 'package:tech_verse/domain/repositories/auth_repository_interface.dart';
-import 'package:tech_verse/enums/auth_state.dart';
+import 'package:tech_verse/enums/request_state.dart';
 import 'package:tech_verse/utilities/failure.dart';
 
-class SignUpStateNotifier extends StateNotifier<AuthState> {
+class SignUpStateNotifier extends StateNotifier<RequestState> {
   final AuthRepositoryInterface _authRepositoryInterface;
 
   SignUpStateNotifier({
     required AuthRepositoryInterface authRepositoryInterface,
   })  : _authRepositoryInterface = authRepositoryInterface,
         super(
-          const AuthState.idle(),
+          const RequestState.idle(),
         );
-
-  TechVerseUser? _techVerseUser;
-  TechVerseUser? get techVerseUser => _techVerseUser;
 
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
@@ -26,20 +22,18 @@ class SignUpStateNotifier extends StateNotifier<AuthState> {
     required String fullName,
     required String username,
   }) async {
-    state = const AuthState.loading();
+    state = const RequestState.loading();
     try {
-      final user = await _authRepositoryInterface.signupWithEmailAndPassword(
+      await _authRepositoryInterface.signupWithEmailAndPassword(
         email: email,
         password: password,
       );
-
-      _techVerseUser = user;
     } on Failure catch (e) {
-      state = const AuthState.error();
+      state = const RequestState.error();
       _errorMessage = e.message;
     } finally {
       Future.delayed(const Duration(milliseconds: 100), () {
-        state = const AuthState.idle();
+        state = const RequestState.idle();
       });
     }
   }

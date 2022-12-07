@@ -1,19 +1,55 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tech_verse/enums/request_state.dart';
+import 'package:tech_verse/features/authentication/login/view_model/login_view_model.dart';
+import 'package:tech_verse/screens/sign_up_screen.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends ConsumerState<LoginScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  late final TextEditingController _emailTextController;
+  late final TextEditingController _passwordTextController;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _emailTextController = TextEditingController();
+    _passwordTextController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _emailTextController.dispose();
+    _passwordTextController.dispose();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    ref.listen<RequestState>(loginViewModel, (previous, next) {
+      if (next == const RequestState.error()) {
+        final errorMessage = ref.read(loginViewModel.notifier).errorMessage;
+
+        if (errorMessage != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(errorMessage),
+            ),
+          );
+        }
+      }
+    });
     return SafeArea(
       child: Scaffold(
         body: Container(
@@ -52,9 +88,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     TextFormField(
-                      // decoration: const InputDecoration(
-                      //   hintText: 'Enter your email',
-                      // ),
+                      controller: _emailTextController,
+                      keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
                         hintText: "Email",
                         filled: true,
@@ -65,7 +100,15 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       validator: (String? value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter some text';
+                          return 'Email is required';
+                        }
+
+                        final RegExp emailRegExp = RegExp(
+                          r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$',
+                        );
+
+                        if (!emailRegExp.hasMatch(value.trim())) {
+                          return "Please enter a valid email";
                         }
                         return null;
                       },
@@ -74,9 +117,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: 24.0,
                     ),
                     TextFormField(
-                      // decoration: const InputDecoration(
-                      //   hintText: 'Enter your email',
-                      // ),
+                      obscureText: true,
                       decoration: InputDecoration(
                         hintText: "Password",
                         filled: true,
@@ -87,7 +128,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       validator: (String? value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter some text';
+                          return 'Password is required';
                         }
                         return null;
                       },
@@ -96,7 +137,16 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: 32.0,
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          final model = ref.read(loginViewModel.notifier);
+
+                          model.login(
+                            email: _emailTextController.text.trim(),
+                            password: _passwordTextController.text.trim(),
+                          );
+                        }
+                      },
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(
                           const Color(0xff2C64C6),
@@ -111,14 +161,36 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                       ),
-                      child: Text(
-                        "Log in",
-                        style: GoogleFonts.ubuntu(
-                          fontWeight: FontWeight.w700,
-                          color: Colors.white,
-                          fontSize: 18.0,
-                        ),
-                      ),
+                      child: ref.watch(loginViewModel).when(
+                            idle: () => Text(
+                              "Log In",
+                              style: GoogleFonts.ubuntu(
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white,
+                                fontSize: 18.0,
+                              ),
+                            ),
+                            loading: () => const CircularProgressIndicator(
+                              strokeWidth: 2.0,
+                              color: Colors.white,
+                            ),
+                            success: () => Text(
+                              "Log In",
+                              style: GoogleFonts.ubuntu(
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white,
+                                fontSize: 18.0,
+                              ),
+                            ),
+                            error: (error) => Text(
+                              "Log In",
+                              style: GoogleFonts.ubuntu(
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white,
+                                fontSize: 18.0,
+                              ),
+                            ),
+                          ),
                     ),
                     const SizedBox(
                       height: 24.0,
@@ -150,7 +222,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       text: 'Sign Up',
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
-                          // TODO: Handle sign up click
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const SignUpScreen(),
+                            ),
+                          );
                         },
                       style: GoogleFonts.ubuntu(
                         fontSize: 16.0,
