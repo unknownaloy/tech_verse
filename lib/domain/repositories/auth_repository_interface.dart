@@ -5,4 +5,10 @@ abstract class AuthRepositoryInterface {
     required String email,
     required String password,
   });
+
+  bool isSignedIn();
+
+  Future<void> logOut();
+
+  Stream<TechVerseUser?> user();
 }

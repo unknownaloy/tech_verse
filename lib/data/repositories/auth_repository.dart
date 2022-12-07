@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:tech_verse/data/models/tech_verse_user.dart';
 import 'package:tech_verse/domain/repositories/auth_repository_interface.dart';
 import 'package:tech_verse/utilities/failure.dart';
@@ -35,5 +36,35 @@ class AuthRepository implements AuthRepositoryInterface {
     } catch (e) {
       throw Failure(kCatchErrorMessage);
     }
+  }
+
+  @override
+  bool isSignedIn() {
+    final currentUser = _auth.currentUser;
+
+    debugPrint("AuthRepository - isSignedIn -- currentUser -> $currentUser");
+
+    return currentUser != null;
+  }
+
+
+
+  @override
+  Future<void> logOut() async {
+    await _auth.signOut();
+  }
+
+  @override
+  Stream<TechVerseUser?> user() {
+    return _auth.authStateChanges().map((firebaseUser) {
+      if (firebaseUser == null) {
+        return null;
+      }
+
+      return TechVerseUser(
+        id: firebaseUser.uid,
+        email: firebaseUser.email,
+      );
+    });
   }
 }
