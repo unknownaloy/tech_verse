@@ -44,10 +44,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     return Scaffold(
       body: PageView(
         controller: _pageController,
-        children: [
-          const Screen01(),
-          const Screen02(),
-          const Screen03(),
+        children: const [
+          Screen01(),
+          Screen02(),
+          Screen03(),
         ],
       ),
     );

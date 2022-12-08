@@ -37,7 +37,7 @@ class HomeScreen extends ConsumerWidget {
                   Text(
                     "TECHVERSE",
                     style: GoogleFonts.ubuntu(
-                      fontSize: 48.0,
+                      fontSize: 32.0,
                       fontWeight: FontWeight.w700,
                       color: Colors.white,
                     ),
