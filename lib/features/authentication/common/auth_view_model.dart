@@ -1,9 +1,19 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tech_verse/data/models/tech_verse_user.dart';
+import 'package:tech_verse/data/repositories/auth_repository.dart';
 import 'package:tech_verse/domain/repositories/auth_repository_interface.dart';
 import 'package:tech_verse/enums/app_state.dart';
+
+final authViewModel = StateNotifierProvider<AuthViewModel, AppState>(
+      (ref) {
+    final authService = ref.watch(authRepository);
+
+    return AuthViewModel(authRepository: authService);
+  },
+);
 
 class AuthViewModel extends StateNotifier<AppState> {
   final AuthRepositoryInterface _authRepository;

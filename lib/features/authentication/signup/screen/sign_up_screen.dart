@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tech_verse/enums/request_state.dart';
-import 'package:tech_verse/utilities/service_locator.dart';
-import 'package:tech_verse/view_models/sign_up_state_notifier.dart';
+import 'package:tech_verse/features/authentication/common/auth_validator.dart';
+import 'package:tech_verse/features/authentication/signup/view_model/sign_up_view_model.dart';
 
 class SignUpScreen extends ConsumerStatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -46,10 +46,22 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isLoading = ref.watch(signUpViewModel).maybeWhen(
+          loading: () => true,
+          orElse: () => false,
+        );
     ref.listen<RequestState>(signUpViewModel, (previous, next) {
+      if (next == const RequestState.success()) {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const AuthValidator(),
+          ),
+          (route) => false,
+        );
+      }
       if (next == const RequestState.error()) {
-        final errorMessage =
-            ref.read(signUpViewModel.notifier).errorMessage;
+        final errorMessage = ref.read(signUpViewModel.notifier).errorMessage;
 
         if (errorMessage != null) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -252,8 +264,8 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                                   TextButton(
                                     onPressed: () {
                                       if (_formKey.currentState!.validate()) {
-                                        final model = ref
-                                            .read(signUpViewModel.notifier);
+                                        final model =
+                                            ref.read(signUpViewModel.notifier);
 
                                         model.signUp(
                                           email:
@@ -283,21 +295,12 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                                         ),
                                       ),
                                     ),
-                                    child: ref.watch(signUpViewModel).when(
-                                          idle: () => Text(
-                                            "Sign Up",
-                                            style: GoogleFonts.ubuntu(
-                                              fontWeight: FontWeight.w700,
-                                              color: Colors.white,
-                                              fontSize: 18.0,
-                                            ),
-                                          ),
-                                          loading: () =>
-                                              const CircularProgressIndicator(
+                                    child: isLoading
+                                        ? const CircularProgressIndicator(
                                             strokeWidth: 2.0,
                                             color: Colors.white,
-                                          ),
-                                          success: () => Text(
+                                          )
+                                        : Text(
                                             "Sign Up",
                                             style: GoogleFonts.ubuntu(
                                               fontWeight: FontWeight.w700,
@@ -305,15 +308,6 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                                               fontSize: 18.0,
                                             ),
                                           ),
-                                          error: (error) => Text(
-                                            "Sign Up",
-                                            style: GoogleFonts.ubuntu(
-                                              fontWeight: FontWeight.w700,
-                                              color: Colors.white,
-                                              fontSize: 18.0,
-                                            ),
-                                          ),
-                                        ),
                                   ),
                                   const SizedBox(
                                     height: 24.0,
@@ -330,7 +324,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                                             text: 'Login In',
                                             recognizer: TapGestureRecognizer()
                                               ..onTap = () {
-                                                // TODO: Handle sign up click
+                                                Navigator.pop(context);
                                               },
                                             style: TextStyle(
                                               decoration:

@@ -4,9 +4,8 @@ import 'package:tech_verse/domain/repositories/auth_repository_interface.dart';
 import 'package:tech_verse/enums/request_state.dart';
 import 'package:tech_verse/utilities/failure.dart';
 
-
 final signUpViewModel =
-StateNotifierProvider<SignUpViewModel, RequestState>((ref) {
+    StateNotifierProvider<SignUpViewModel, RequestState>((ref) {
   final authService = ref.watch(authRepository);
 
   return SignUpViewModel(authRepositoryInterface: authService);
@@ -21,6 +20,8 @@ class SignUpViewModel extends StateNotifier<RequestState> {
         super(
           const RequestState.idle(),
         );
+
+  RequestState get value => state;
 
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
@@ -37,12 +38,14 @@ class SignUpViewModel extends StateNotifier<RequestState> {
         email: email,
         password: password,
       );
+      state = const RequestState.success();
     } on Failure catch (e) {
       state = const RequestState.error();
       _errorMessage = e.message;
     } finally {
       Future.delayed(const Duration(milliseconds: 100), () {
-        state = const RequestState.idle();
+        // state = RequestState.idle;
+        _errorMessage = null;
       });
     }
   }

@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tech_verse/data/models/tech_verse_user.dart';
 import 'package:tech_verse/domain/repositories/auth_repository_interface.dart';

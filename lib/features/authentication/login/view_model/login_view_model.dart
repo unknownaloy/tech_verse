@@ -24,6 +24,8 @@ class LoginViewModel extends StateNotifier<RequestState> {
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
 
+  RequestState get value => state;
+
   void login({
     required String email,
     required String password,
@@ -35,14 +37,15 @@ class LoginViewModel extends StateNotifier<RequestState> {
         email: email,
         password: password,
       );
+      state = const RequestState.success();
     } on Failure catch (e) {
-      state = const RequestState.error();
       _errorMessage = e.message;
+      state = const RequestState.error();
     }
-    // finally {
-    //   Future.delayed(const Duration(milliseconds: 100), () {
-    //     state = const RequestState.idle();
-    //   });
-    // }
+    finally {
+      Future.delayed(const Duration(milliseconds: 100), () {
+        _errorMessage = null;
+      });
+    }
   }
 }

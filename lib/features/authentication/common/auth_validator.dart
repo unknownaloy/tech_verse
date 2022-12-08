@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tech_verse/enums/app_state.dart';
+import 'package:tech_verse/features/authentication/common/auth_view_model.dart';
 import 'package:tech_verse/features/home/screens/home_screen.dart';
 import 'package:tech_verse/features/authentication/login/screens/login_screen.dart';
-import 'package:tech_verse/screens/sign_up_screen.dart';
-import 'package:tech_verse/utilities/service_locator.dart';
 
 class AuthValidator extends ConsumerWidget {
   const AuthValidator({Key? key}) : super(key: key);

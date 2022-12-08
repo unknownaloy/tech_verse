@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tech_verse/enums/request_state.dart';
+import 'package:tech_verse/features/authentication/common/auth_validator.dart';
 import 'package:tech_verse/features/authentication/login/view_model/login_view_model.dart';
-import 'package:tech_verse/screens/sign_up_screen.dart';
+import 'package:tech_verse/features/authentication/signup/screen/sign_up_screen.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -37,7 +38,21 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isLoading = ref.watch(loginViewModel).maybeWhen(
+          loading: () => true,
+          orElse: () => false,
+        );
     ref.listen<RequestState>(loginViewModel, (previous, next) {
+      if (next == const RequestState.success()) {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const AuthValidator(),
+          ),
+          (route) => false,
+        );
+      }
+
       if (next == const RequestState.error()) {
         final errorMessage = ref.read(loginViewModel.notifier).errorMessage;
 
@@ -117,6 +132,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       height: 24.0,
                     ),
                     TextFormField(
+                      controller: _passwordTextController,
                       obscureText: true,
                       decoration: InputDecoration(
                         hintText: "Password",
@@ -161,20 +177,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           ),
                         ),
                       ),
-                      child: ref.watch(loginViewModel).when(
-                            idle: () => Text(
-                              "Log In",
-                              style: GoogleFonts.ubuntu(
-                                fontWeight: FontWeight.w700,
-                                color: Colors.white,
-                                fontSize: 18.0,
-                              ),
-                            ),
-                            loading: () => const CircularProgressIndicator(
+                      child: isLoading
+                          ? const CircularProgressIndicator(
                               strokeWidth: 2.0,
                               color: Colors.white,
-                            ),
-                            success: () => Text(
+                            )
+                          : Text(
                               "Log In",
                               style: GoogleFonts.ubuntu(
                                 fontWeight: FontWeight.w700,
@@ -182,15 +190,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 fontSize: 18.0,
                               ),
                             ),
-                            error: (error) => Text(
-                              "Log In",
-                              style: GoogleFonts.ubuntu(
-                                fontWeight: FontWeight.w700,
-                                color: Colors.white,
-                                fontSize: 18.0,
-                              ),
-                            ),
-                          ),
                     ),
                     const SizedBox(
                       height: 24.0,
