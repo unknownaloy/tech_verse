@@ -144,16 +144,31 @@ class HomeScreen extends ConsumerWidget {
                   ),
                 ],
               ),
-              TextButton(
-                  onPressed: () {
-                    ref.read(authViewModel.notifier).signOut();
-                  },
-                  child: Text(
-                    "Import existing account?",
-                    style: GoogleFonts.ubuntu(
-                      color: Colors.white,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TextButton(
+                    onPressed: () {},
+                    child: Text(
+                      "Import existing account?",
+                      style: GoogleFonts.ubuntu(
+                        color: Colors.white,
+                      ),
                     ),
-                  ))
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      ref.read(authViewModel.notifier).signOut();
+                    },
+                    child: Text(
+                      "Sign out",
+                      style: GoogleFonts.ubuntu(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              )
             ],
           ),
         ),
