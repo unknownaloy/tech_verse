@@ -15,15 +15,25 @@ class AuthRepository implements AuthRepositoryInterface {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
-  Future<void> signupWithEmailAndPassword({
+  Future<TechVerseUser?> signupWithEmailAndPassword({
     required String email,
     required String password,
   }) async {
     try {
-      await _auth.createUserWithEmailAndPassword(
+      final UserCredential userCredential =
+          await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
+
+      final user = userCredential.user;
+
+      final techVerseUser = TechVerseUser(
+        id: user?.uid,
+        email: user?.email,
+      );
+
+      return techVerseUser;
     } on FirebaseException catch (e) {
       throw Failure(e.message ?? kFirebaseExceptionMessage);
     } on SocketException {

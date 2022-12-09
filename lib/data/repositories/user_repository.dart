@@ -1,10 +1,15 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tech_verse/domain/params/save_user_data_params.dart';
 import 'package:tech_verse/domain/repositories/user_repository_interface.dart';
 import 'package:tech_verse/utilities/failure.dart';
 import 'package:tech_verse/utilities/strings.dart';
+
+final userRepository = Provider<UserRepositoryInterface>(
+  (ref) => UserRepository(),
+);
 
 class UserRepository implements UserRepositoryInterface {
   final _db = FirebaseFirestore.instance;

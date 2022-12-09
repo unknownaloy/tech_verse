@@ -1,7 +1,7 @@
 import 'package:tech_verse/data/models/tech_verse_user.dart';
 
 abstract class AuthRepositoryInterface {
-  Future<void> signupWithEmailAndPassword({
+  Future<TechVerseUser?> signupWithEmailAndPassword({
     required String email,
     required String password,
   });
