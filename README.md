@@ -10,7 +10,9 @@ Techverse (T-MFA) is a Multi-factor Authenticator tool that validates applicatio
 While various Multi-Factor Authenticator technologies reduce the risk of exploitation through client-side vulnerabilities, threat actors can still have their way through brute force methods. With Techverse MFAs, strict access control configurations and compliance are implemented from the server and client side to ensure user protection.
 
 
-** Techverse Security Features
+
+Techverse Security Features
+
 
 - Supports a location-based algorithm protocol that validates login when the user browser and authenticator app location match.
 
