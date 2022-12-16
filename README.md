@@ -33,4 +33,4 @@ Backup and Simple Migration
 Aside from password recovery in the case of loss or change of device, Techverse Authenticator supports secure and convenient backup and transfer. With the Techverse framework, the original device can verify the legitimacy of the new device before generating and storing new slots for MFA on it.
 
 
-[Download Tech Verse for Android](https://github.com/unknownaloy/tech_verse/raw/master/apk/tech_verse.apk)
+[Download Tech Verse for Android](https://github.com/unknownaloy/tech_verse/raw/main/apk/tech_verse.apk)
